@@ -1,0 +1,119 @@
+</html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynBalance - Sistema de Login Distribuído</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="network-background">
+        <div class="floating-node node-1"></div>
+        <div class="floating-node node-2"></div>
+        <div class="floating-node node-3"></div>
+        <div class="floating-node node-4"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="sync-card">
+            <div class="sync-border"></div>
+            
+            <div class="server-info-box">
+                <span class="server-icon">🖥️</span>
+                <div>
+                    <h3>Servidor Conectado</h3>
+                    <div class="server-name" id="serverName">Carregando...</div>
+                </div>
+            </div>
+
+            <!-- Seção de Login -->
+            <div id="loginSection">
+                <div class="header">
+                    <div class="logo">
+                        <div class="logo-circle circle-1"></div>
+                        <div class="logo-circle circle-2"></div>
+                        <div class="logo-circle circle-3"></div>
+                        <div class="logo-center"></div>
+                    </div>
+                    <h1>SynBalance</h1>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-field">
+                        <div class="field-border"></div>
+                        <input type="text" id="username" name="username" placeholder=" " required autocomplete="username">
+                        <label for="username">Usuário</label>
+                        <span class="error-msg" id="usernameError"></span>
+                    </div>
+
+                    <div class="form-field">
+                        <div class="field-border"></div>
+                        <input type="password" id="password" name="password" placeholder=" " required autocomplete="current-password">
+                        <label for="password">Senha</label>
+                        <button type="button" class="password-toggle" id="passwordToggle">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 4c-4 0-7 3-8 6 1 3 4 6 8 6s7-3 8-6c-1-3-4-6-8-6zm0 10a4 4 0 110-8 4 4 0 010 8zm0-6a2 2 0 100 4 2 2 0 000-4z" fill="currentColor"/>
+                            </svg>
+                        </button>
+                        <span class="error-msg" id="passwordError"></span>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember">
+                            <span class="checkbox-custom"></span>
+                            <span>Manter conectado</span>
+                        </label>
+                        <a href="#" class="link">Esqueceu a senha?</a>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span class="btn-text">Entrar</span>
+                        <div class="btn-loading">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </button>
+                </form>
+
+            </div>
+
+            <!-- Seção de Perfil (oculta inicialmente) -->
+            <div id="profileSection" class="profile-section">
+                <div class="profile-card">
+                    <h2>Olá, <span id="profileName">-</span>! 👋</h2>
+                    
+                    <div class="info-row">
+                        <span class="info-label">👤 Usuário</span>
+                        <span class="info-value" id="profileUsername">-</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">🕐 Login em</span>
+                        <span class="info-value" id="loginTime">-</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">🔑 ID da Sessão</span>
+                        <span class="info-value" id="sessionId">-</span>
+                    </div>
+
+                    <div class="info-row">
+                        <span class="info-label">🖥️ Servidor Atual</span>
+                        <span class="info-value" id="currentServer">-</span>
+                    </div>
+                </div>
+
+                <button class="logout-btn" id="logoutBtn">Sair</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
