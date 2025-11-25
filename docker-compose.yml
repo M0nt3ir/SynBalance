@@ -1,0 +1,118 @@
+version: '3'
+
+services:
+  database:
+    image: postgres:15-alpine
+    container_name: synbalance-db
+    environment:
+      POSTGRES_DB: synbalance
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: senha123
+    volumes:
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.10
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d synbalance"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: synbalance-redis
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.11
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: synbalance-backend
+    hostname: backend-server
+    environment:
+      DB_HOST: database
+      REDIS_HOST: redis
+      PORT: 3000
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.20
+
+  http1:
+    image: nginx:alpine
+    container_name: synbalance-http1
+    hostname: servidor-azul
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./frontend/azul.txt:/usr/share/nginx/html/nome_servidor.txt
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "10.0.0.2:80:80"
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.31
+    depends_on:
+      - backend
+
+  http2:
+    image: nginx:alpine
+    container_name: synbalance-http2
+    hostname: servidor-verde
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./frontend/verde.txt:/usr/share/nginx/html/nome_servidor.txt
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "10.0.0.3:80:80"
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.32
+    depends_on:
+      - backend
+
+  http3:
+    image: nginx:alpine
+    container_name: synbalance-http3
+    hostname: servidor-roxo
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+      - ./frontend/roxo.txt:/usr/share/nginx/html/nome_servidor.txt
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "10.0.0.4:80:80"
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.33
+    depends_on:
+      - backend
+
+  dns:
+    build: ./dns
+    container_name: synbalance-dns
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+    networks:
+      synbalance-net:
+        ipv4_address: 172.20.0.5
+
+networks:
+  synbalance-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  db-data:
+  redis-data:
