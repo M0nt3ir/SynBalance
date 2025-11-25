@@ -4,6 +4,6 @@
  O presente trabalho da disciplina `Redes de Computadores` tem como objetivo desenvolver uma solução em aplicação web, que persista o acesso do usuário em diferentes servidores HTTP, sendo distribuído por um servidor DNS.
 
 ## 🛠 Tecnologias Utilizadas
-
-
-## ⚙️ Como executar
+- Docker -> criação dos servidores;
+- HTML/CSS -> Design no Frontend;
+- JavaScript -> Backend e lógica do Frontend.
